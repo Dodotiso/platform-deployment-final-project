@@ -26,7 +26,7 @@ WORKDIR /var/www/html
 COPY . .
 
 # Install PHP dependencies
-RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --no-interaction --optimize-autoloader
+RUN composer install --no-interaction --optimize-autoloader
 
 # Set permissions and create log directory
 RUN chown -R www-data:www-data /var/www/html/var /var/www/html/public
