@@ -10,7 +10,7 @@ set +a
 
 # Wait for database
 echo "⏳ Waiting for database..."
-until php -r "new PDO('mysql:host=mysql', '${MYSQL_USER}', '${MYSQL_PASSWORD}');" 2>/dev/null; do
+until php -r "new PDO('mysql:host=mysql.railway.internal', '${MYSQL_USER}', '${MYSQL_PASSWORD}');" 2>/dev/null; do
     echo "Still waiting..."
     sleep 2
 done
