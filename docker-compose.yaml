@@ -1,0 +1,44 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: platform-prod-app
+    ports:
+      - "8085:80"
+    environment:
+      APP_ENV: prod
+      APP_DEBUG: 0
+      DATABASE_URL: "mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@database:3306/${MYSQL_DATABASE}?serverVersion=8.0.32&charset=utf8mb4"
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - platform-network
+    restart: unless-stopped
+
+  database:
+    image: mysql:8.0
+    container_name: platform-prod-db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3311:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - platform-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+volumes:
+  db-data:
+
+networks:
+  platform-network:
+    driver: bridge

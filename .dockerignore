@@ -1,0 +1,11 @@
+.git
+.gitignore
+.gitattributes
+vendor/
+var/
+node_modules/
+tests/
+README.md
+docker-compose.yaml
+compose*.yaml
+.*.yaml
